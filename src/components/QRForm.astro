@@ -1,0 +1,60 @@
+<script>
+  const form = document.getElementById("qr-form");
+
+  function onFormSubmit(e) {
+    e.preventDefault();
+    const url = document.getElementById("text-input") as HTMLInputElement;
+    const size = document.getElementById("size") as HTMLSelectElement;
+
+    if (url.value === "") return;
+
+    dispatchQREvent(url.value, size.value);
+  }
+
+  function dispatchQREvent(url: string, size: string) {
+    const Event = new CustomEvent("create-qrcode", {
+      detail: {
+        url,
+        size,
+      },
+    });
+    document.body.dispatchEvent(Event);
+  }
+
+  if (form) {
+    form.addEventListener("submit", onFormSubmit);
+  }
+</script>
+
+<form id="qr-form" class="mt-4">
+  <label>
+    <span class="text-sm text-gray-6">Please enter a URL:</span>
+    <input
+      id="text-input"
+      required
+      type="url"
+      placeholder="https://www.example.com"
+      class="w-full border-2 border-gray-200 rounded p-3 text-grey-800 mr-2 mb-5 focus:outline-none"
+    />
+  </label>
+  <label>
+    <span class="text-sm text-gray-6">Select a size:</span>
+    <select
+      class="w-full border-2 border-gray-200 rounded p-3 text-grey-800 mr-2 focus:outline-none"
+      name="size"
+      id="size"
+    >
+      <option value="100">100x100</option>
+      <option value="200">200x200</option>
+      <option value="300" selected>300x300</option>
+      <option value="400">400x400</option>
+      <option value="500">500x500</option>
+      <option value="600">600x600</option>
+      <option value="700">700x700</option>
+    </select>
+  </label>
+  <button
+    class="bg-gray-600 border-0 rounded w-full c-white py-3 px-4 mt-8 hover:bg-black"
+    type="submit">Generate QR Code</button
+  >
+</form>
